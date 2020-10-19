@@ -101,10 +101,11 @@ namespace BetterMenu
             
             
 
-            campaign.position = new Vector3(-0.97f, 1.07f, 2.6f);
-            solo.position = new Vector3(-0.38f, 1.07f, 2.60f);
-            online.position = new Vector3(0.5f, 1.57f, 2.60f);
-            party.position = new Vector3(0.40f, 1.04f, 2.60f);
+            campaign.position = new Vector3(-0.85f, 1.07f, 2.6f);
+            solo.position = new Vector3(-0.22f, 1.07f, 2.60f);
+            online.position = new Vector3(0.72f, 1.6f, 2.60f);
+            party.position = new Vector3(0.62f, 1.07f, 2.60f);
+            (party as RectTransform).sizeDelta = new Vector2(53.6f, 24.0f);
 
             // Options Button
             GameObject optionsGO = null;
@@ -121,11 +122,11 @@ namespace BetterMenu
 
             settingsSpriteSwap.GetPrivateField<Image[]>("_images")[0].sprite = settingsSpriteNormal;
             
-            options.position = new Vector3(-0.80f, 0.76f, 2.60f);
+            options.position = new Vector3(-0.66f, 0.75f, 2.60f);
             options.localScale = new Vector3(1.35f, 1.35f, 1f);
             
-            editor.position = new Vector3(-0.07f, 0.8f, 2.60f);
-            help.position = new Vector3(0.185f, 0.8f, 2.60f);
+            editor.position = new Vector3(0.12f, 0.79f, 2.60f);
+            help.position = new Vector3(0.39f, 0.79f, 2.60f);
 
 
             GameObject exitGO = null;
@@ -141,7 +142,7 @@ namespace BetterMenu
             exitSpriteSwap.SetPrivateField("_highlightStateSprite", exitSpriteActive);
 
             exitSpriteSwap.GetPrivateField<Image[]>("_images")[0].sprite = exitSpriteNormal;
-            exit.position = new Vector3(0.6f, 0.65f, 2.60f);
+            exit.position = new Vector3(0.83f, 0.63f, 2.60f);
             exit.localScale = new Vector3(2.35f, 2.3f, 1f);
         }
         private void AddEvents()
