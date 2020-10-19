@@ -3,9 +3,9 @@
   "id": "BetterMenu",
   "name": "BetterMenu",
   "author": "",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "",
-  "gameVersion": "1.11.1",
+  "gameVersion": "1.12.2",
   "dependsOn": {
     "BSIPA": "^4.1.3"
   },
