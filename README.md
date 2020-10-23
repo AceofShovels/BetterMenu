@@ -6,4 +6,5 @@ Extract the zip file inside of your Beat Saber directory.
 Requires BSIPA 4.1.3 minimum
 
 # Screenshot
+Artwork and concept by Adamek1926
 ![Better Main Menu](https://i.imgur.com/3db2VkW.png)
