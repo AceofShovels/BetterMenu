@@ -97,7 +97,6 @@
   <ItemGroup>
     <Compile Include="Plugin.cs" />
     <Compile Include="Configuration\PluginConfig.cs" />
-    <Compile Include="BetterMenuController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utilities\ReflectionUtil.cs" />
     <Compile Include="Utilities\Utils.cs" />
@@ -118,14 +117,20 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Resources\settings.png" />
+    <EmbeddedResource Include="Resources\SettingsNormal.png" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Resources\settingsActive.png" />
+    <EmbeddedResource Include="Resources\SettingsActive.png" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Resources\exit.png" />
-    <EmbeddedResource Include="Resources\exitActive.png" />
+    <EmbeddedResource Include="Resources\ExitNormal.png" />
+    <EmbeddedResource Include="Resources\ExitActive.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\SoloNormal.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\SoloActive.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

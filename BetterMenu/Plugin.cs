@@ -25,135 +25,77 @@ namespace BetterMenu
         internal static IPALogger Log { get; private set; }
 
         [Init]
-        /// <summary>
-        /// Called when the plugin is first loaded by IPA (either when the game starts or when the plugin is enabled if it starts disabled).
-        /// [Init] methods that use a Constructor or called before regular methods like InitWithConfig.
-        /// Only use [Init] with one Constructor.
-        /// </summary>
         public void Init(IPALogger logger)
         {
             Instance = this;
             Log = logger;
-            Log.Info("BetterMenu initialized.");
         }
-
-        #region BSIPA Config
-        //Uncomment to use BSIPA's config
-        /*
-        [Init]
-        public void InitWithConfig(Config conf)
-        {
-            Configuration.PluginConfig.Instance = conf.Generated<Configuration.PluginConfig>();
-            Log.Debug("Config loaded");
-        }
-        */
-        #endregion
 
         [OnStart]
         public void OnApplicationStart()
         {
-            Log.Debug("OnApplicationStart");
-            new GameObject("BetterMenuController").AddComponent<BetterMenuController>();
-            AddEvents();
-
+            SceneManager.sceneLoaded += OnLoad;
         }
 
-        [OnExit]
-        public void OnApplicationQuit()
-        {
-            Log.Debug("OnApplicationQuit");
-
-        }
-        public void onLoad(Scene scene, LoadSceneMode mode)
+        public void OnLoad(Scene scene, LoadSceneMode mode)
         {
             if (scene.name == "MenuViewControllers")
             {
-                SharedCoroutineStarter.instance.StartCoroutine(organize());
+                SharedCoroutineStarter.instance.StartCoroutine(Organize());
             }
         }
-        private IEnumerator organize()
+
+        private IEnumerator Organize()
         {
-            bool found = false;
-            Transform mainButtons = null;
-            while (!found) {
-                yield return null;
-                Scene menuCore = SceneManager.GetSceneByName("MenuCore");
-                GameObject wrapper = menuCore.GetRootGameObjects().First();
-                Transform mainMenuViewController = wrapper.transform.Find("ScreenSystem").transform.Find("ScreenContainer").transform.Find("MainScreen").transform.Find("MainMenuViewController");
-                if (mainMenuViewController != null)
-                {
-                    mainButtons = mainMenuViewController.transform.Find("MainButtons");
-                    found = true;
-                }
-            }
+            yield return new WaitUntil(() => GameObject.Find("MainButtons"));
+            var mainButtons = GameObject.Find("MainButtons");
 
-            Transform campaign = mainButtons.Find("CampaignButton");
-            Transform solo = mainButtons.Find("SoloButton");
-            Transform online = mainButtons.Find("OnlineButton");
-            Transform party = mainButtons.Find("PartyButton");
-            Transform options = mainButtons.Find("OptionsButton");
-            Transform editor = mainButtons.Find("EditorButton");
-            Transform help = mainButtons.Find("HelpButton");
-            Transform exit = mainButtons.Find("ExitButton");
-
-            
-
-            
-            
-
+            Transform campaign = mainButtons.transform.Find("CampaignButton");
+            Transform solo = mainButtons.transform.Find("SoloButton");
+            Transform online = mainButtons.transform.Find("OnlineButton");
+            Transform party = mainButtons.transform.Find("PartyButton");
+            Transform options = mainButtons.transform.Find("OptionsButton");
+            Transform editor = mainButtons.transform.Find("EditorButton");
+            Transform help = mainButtons.transform.Find("HelpButton");
+            Transform exit = mainButtons.transform.Find("ExitButton");
+ 
+            // Set button positions
             campaign.position = new Vector3(-0.85f, 1.07f, 2.6f);
-            solo.position = new Vector3(-0.22f, 1.07f, 2.60f);
-            online.position = new Vector3(0.72f, 1.6f, 2.60f);
-            party.position = new Vector3(0.62f, 1.07f, 2.60f);
-            (party as RectTransform).sizeDelta = new Vector2(53.6f, 24.0f);
+            solo.position     = new Vector3(-0.22f, 1.07f, 2.60f);
+            online.position   = new Vector3(0.72f, 1.6f, 2.60f);
+            party.position    = new Vector3(0.62f, 1.05f, 2.60f);
+            options.position  = new Vector3(-0.66f, 0.75f, 2.60f);
+            editor.position   = new Vector3(0.12f, 0.79f, 2.60f);
+            help.position     = new Vector3(0.39f, 0.79f, 2.60f);
+            exit.position     = new Vector3(0.83f, 0.63f, 2.60f);
 
-            // Options Button
-            GameObject optionsGO = null;
-            while (optionsGO == null)
-            {
-                optionsGO = options.gameObject;
-                yield return null;
-            }
-            ButtonSpriteSwap settingsSpriteSwap = optionsGO.GetComponentInChildren<ButtonSpriteSwap>();
-            Sprite settingsSpriteNormal = Utilities.Utils.LoadSpriteFromResources("BetterMenu.Resources.settings.png");
-            Sprite settingsSpriteActive = Utilities.Utils.LoadSpriteFromResources("BetterMenu.Resources.settingsActive.png");
-            settingsSpriteSwap.SetPrivateField("_normalStateSprite", settingsSpriteNormal);
-            settingsSpriteSwap.SetPrivateField("_highlightStateSprite", settingsSpriteActive);
+            // Rescale Settings and Exit buttons
+            options.localScale = new Vector3(1.35f, 1.35f, 1.0f);
+            exit.localScale    = new Vector3(2.35f, 2.3f, 1.0f);
 
-            settingsSpriteSwap.GetPrivateField<Image[]>("_images")[0].sprite = settingsSpriteNormal;
+            // Change solo sprites
+            ButtonSpriteSwap soloSpriteSwap = solo.GetComponentInChildren<ButtonSpriteSwap>();
+            var soloNormalSprite = Utilities.Utils.LoadSpriteFromResources("BetterMenu.Resources.SoloNormal.png");
+            var soloActiveSprite = Utilities.Utils.LoadSpriteFromResources("BetterMenu.Resources.SoloActive.png");
+            soloSpriteSwap.SetPrivateField("_normalStateSprite", soloNormalSprite);
+            soloSpriteSwap.SetPrivateField("_highlightStateSprite", soloActiveSprite);
+            soloSpriteSwap.GetPrivateField<Image[]>("_images")[0].sprite = soloNormalSprite;
+
+            // Change options sprites
+            var settingsSpriteSwap = options.GetComponentInChildren<ButtonSpriteSwap>();
+            var settingsNormalSprite = Utilities.Utils.LoadSpriteFromResources("BetterMenu.Resources.SettingsNormal.png");
+            var settingsActiveSprite = Utilities.Utils.LoadSpriteFromResources("BetterMenu.Resources.SettingsActive.png");
+            settingsSpriteSwap.SetPrivateField("_normalStateSprite", settingsNormalSprite);
+            settingsSpriteSwap.SetPrivateField("_highlightStateSprite", settingsActiveSprite);
+            settingsSpriteSwap.GetPrivateField<Image[]>("_images")[0].sprite = settingsNormalSprite;
             
-            options.position = new Vector3(-0.66f, 0.75f, 2.60f);
-            options.localScale = new Vector3(1.35f, 1.35f, 1f);
-            
-            editor.position = new Vector3(0.12f, 0.79f, 2.60f);
-            help.position = new Vector3(0.39f, 0.79f, 2.60f);
-
-
-            GameObject exitGO = null;
-            while (exitGO == null)
-            {
-                exitGO = exit.gameObject;
-                yield return null;
-            }
-            ButtonSpriteSwap exitSpriteSwap = exitGO.GetComponentInChildren<ButtonSpriteSwap>();
-            Sprite exitSpriteNormal = Utilities.Utils.LoadSpriteFromResources("BetterMenu.Resources.exit.png");
-            Sprite exitSpriteActive = Utilities.Utils.LoadSpriteFromResources("BetterMenu.Resources.exitActive.png");
-            exitSpriteSwap.SetPrivateField("_normalStateSprite", exitSpriteNormal);
-            exitSpriteSwap.SetPrivateField("_highlightStateSprite", exitSpriteActive);
-
-            exitSpriteSwap.GetPrivateField<Image[]>("_images")[0].sprite = exitSpriteNormal;
-            exit.position = new Vector3(0.83f, 0.63f, 2.60f);
-            exit.localScale = new Vector3(2.35f, 2.3f, 1f);
-        }
-        private void AddEvents()
-        {
-            RemoveEvents();
-            SceneManager.sceneLoaded += onLoad;
-        }
-
-        private void RemoveEvents()
-        {
-            SceneManager.sceneLoaded -= onLoad;
+            // Change exit sprites
+            var exitSpriteSwap = exit.GetComponentInChildren<ButtonSpriteSwap>();
+            Sprite exitNormalSprite = Utilities.Utils.LoadSpriteFromResources("BetterMenu.Resources.ExitNormal.png");
+            Sprite exitActiveSprite = Utilities.Utils.LoadSpriteFromResources("BetterMenu.Resources.ExitActive.png");
+            exitSpriteSwap.SetPrivateField("_normalStateSprite", exitNormalSprite);
+            exitSpriteSwap.SetPrivateField("_highlightStateSprite", exitActiveSprite);
+            exitSpriteSwap.GetPrivateField<Image[]>("_images")[0].sprite = exitNormalSprite;
         }
     }
 }

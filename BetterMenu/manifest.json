@@ -2,9 +2,9 @@
   "$schema": "https://raw.githubusercontent.com/bsmg/BSIPA-MetadataFileSchema/master/Schema.json",
   "id": "BetterMenu",
   "name": "BetterMenu",
-  "author": "",
-  "version": "0.2.1",
-  "description": "",
+  "author": "AceofShovels",
+  "version": "1.0.0",
+  "description": "Reorganizes the main menu buttons to a more familar grid layout",
   "gameVersion": "1.12.2",
   "dependsOn": {
     "BSIPA": "^4.1.3"
